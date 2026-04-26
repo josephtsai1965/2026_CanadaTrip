@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 加拿大暑假行程｜8/24–8/28 互動版</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe4f0;
+      --blue: #2563eb;
+      --green: #15803d;
+      --orange: #c2410c;
+      --purple: #7c3aed;
+      --soft-blue: #eaf2ff;
+      --soft-green: #ecfdf3;
+      --soft-orange: #fff4e8;
+      --soft-purple: #f3edff;
+      --shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eaf2ff 0%, var(--bg) 320px);
+      line-height: 1.65;
+    }
+
+    header {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 42px 20px 24px;
+    }
+
+    .hero {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: 28px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button, .map-link {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--blue);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    button.secondary {
+      background: #334155;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px 50px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 12px 0 22px;
+    }
+
+    .legend-card {
+      border-radius: 18px;
+      background: var(--card);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .legend-card strong { display: block; margin-bottom: 4px; }
+
+    .day {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .day summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      background: #fbfdff;
+    }
+
+    .day summary::-webkit-details-marker { display: none; }
+
+    .date {
+      font-weight: 900;
+      color: var(--blue);
+      font-size: 20px;
+    }
+
+    .day-title {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .toggle {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .content {
+      padding: 0 24px 24px;
+    }
+
+    .period-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 0 0 18px;
+    }
+
+    .period {
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      padding: 16px;
+      min-height: 190px;
+    }
+
+    .period.morning { background: var(--soft-blue); }
+    .period.afternoon { background: var(--soft-green); }
+    .period.evening { background: var(--soft-orange); }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .time-block {
+      border-top: 1px dashed rgba(31, 41, 55, 0.18);
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    .time {
+      display: inline-block;
+      font-weight: 900;
+      color: #111827;
+      background: rgba(255, 255, 255, 0.72);
+      border-radius: 999px;
+      padding: 2px 9px;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .transport-box, .hotel-box, .note-box {
+      border-radius: 18px;
+      padding: 15px 16px;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+    }
+
+    .transport-box { background: var(--soft-purple); }
+    .hotel-box { background: var(--soft-green); }
+    .note-box { background: #fff7ed; }
+
+    .box-title {
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    li { margin: 3px 0; }
+
+    .route-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow: hidden;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+
+    .route-table th, .route-table td {
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .route-table th {
+      background: #eef2ff;
+      font-weight: 900;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #e2e8f0;
+      color: #334155;
+      margin: 2px 4px 2px 0;
+    }
+
+    .chip.car { background: #dbeafe; color: #1d4ed8; }
+    .chip.flight { background: #fef3c7; color: #92400e; }
+    .chip.walk { background: #dcfce7; color: #166534; }
+    .chip.shuttle { background: #f3e8ff; color: #6d28d9; }
+    .chip.gondola { background: #ffe4e6; color: #be123c; }
+
+    .warning {
+      border-left: 5px solid var(--orange);
+      background: #fff7ed;
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      padding: 10px 20px 40px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .legend, .period-grid { grid-template-columns: 1fr; }
+      .day summary { grid-template-columns: 1fr; }
+      .toggle { display: none; }
+    }
+
+    @media print {
+      body { background: white; }
+      button, .toolbar { display: none; }
+      .day, .legend-card, .hero { box-shadow: none; }
+      details { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <section class="hero">
+      <h1>🇨🇦 2026 加拿大暑假行程</h1>
+      <p class="subtitle">8/24–8/28｜Calgary、Banff、Yoho、Lake Louise｜互動式行程表</p>
+      <div class="toolbar">
+        <button onclick="openAll()">展開全部</button>
+        <button class="secondary" onclick="closeAll()">收合全部</button>
+        <button class="secondary" onclick="window.print()">列印 / 另存 PDF</button>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="legend">
+      <div class="legend-card"><strong>🚗 自駕</strong>Thrifty 租車，YYC 機場取還車</div>
+      <div class="legend-card"><strong>✈️ 航班</strong>WS116、WS133</div>
+      <div class="legend-card"><strong>🚐 接駁</strong>Parks Canada Shuttle / Park & Ride</div>
+      <div class="legend-card"><strong>🚡 纜車</strong>Banff Gondola</div>
+    </section>
+
+    <details class="day" open>
+      <summary>
+        <div class="date">8/24 Mon</div>
+        <div class="day-title">Vancouver → Calgary｜抵達與市區暖身</div>
+        <div class="toggle">點擊展開 / 收合</div>
+      </summary>
+      <div class="content">
+        <div class="period-grid">
+          <section class="period morning">
+            <h3>上午</h3>
+            <div class="time-block">
+              <span class="time">上午</span>
+              <div>在溫哥華準備搭機前往 Calgary。</div>
+            </div>
+          </section>
+          <section class="period afternoon">
+            <h3>下午</h3>
+            <div class="time-block">
+              <span class="time">13:45–16:15</span>
+              <div>搭乘 WestJet <strong>WS116</strong>：YVR → YYC。</div>
+              <div><span class="chip flight">✈️ WS116</span></div>
+            </div>
+            <div class="time-block">
+              <span class="time">16:15–17:30</span>
+              <div>抵達 Calgary International Airport，領行李後至 Thrifty 取車。</div>
+              <div><span class="chip car">🚗 Thrifty @ YYC</span></div>
+            </div>
+            <div class="time-block">
+              <span class="time">17:30–18:00</span>
+              <div>自駕前往 East Village 飯店。</div>
+              <a class="map-link" target="_blank" href="https://www.google.com/maps/dir/Calgary+International+Airport/Alt+Hotel+Calgary+East+Village">開啟導航</a>
+            </div>
+          </section>
+          <section class="period evening">
+            <h3>晚上</h3>
+            <div class="time-block">
+              <span class="time">18:30–19:45</span>
+              <div>Charbar 晚餐。</div>
+              <a class="map-link" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Charbar+Calgary">餐廳地圖</a>
+            </div>
+            <div class="time-block">
+              <span class="time">20:00–21:00</span>
+              <div>Bow River 散步，走向 Peace Bridge 後折返。</div>
+              <div><span class="chip walk">🚶 步行</span></div>
+              <a class="map-link" target="_blank" href="https://www.google.com/maps/dir/Charbar+Calgary/Peace+Bridge+Calgary/Alt+Hotel+Calgary+East+Village">散步路線</a>
+            </div>
+          </section>
+        </div>
+
+        <div class="transport-box">
+          <div class="box-title">交通方式與工具編號</div>
+          <table class="route-table">
+            <tr><th>區段</th><th>方式</th><th>工具 / 編號</th><th>備註</th></tr>
+            <tr><td>YVR → YYC</td><td>飛機</td><td>WestJet WS116</td><td>13:45 起飛，16:15 抵達</td></tr>
+            <tr><td>YYC 機場 → 飯店</td><td>自駕</td><td>Thrifty 租車</td><td>YYC 機場取車</td></tr>
+            <tr><td>飯店 → Charbar → Bow River / Peace Bridge</td><td>步行</td><td>步行</td><td>晚餐後河畔散步</td></tr>
+          </table>
+        </div>
+
+        <div class="hotel-box">
+          <div class="box-title">住宿</div>
+          <strong>Alt Hotel Calgary East Village</strong><br />
+          635 Confluence Way Southeast, Calgary, AB T2G 0G1, Canada
+        </div>
+      </div>
+    </details>
+
+    <details class="day" open>
+      <summary>
+        <div class="date">8/25 Tue</div>
+        <div class="day-title">Calgary → Banff / Canmore｜弓湖、佩托湖、班夫小鎮</div>
+        <div class="toggle">點擊展開 / 收合</div>
+      </summary>
+      <div class="content">
+        <div class="period-grid">
+          <section class="period morning">
+            <h3>上午</h3>
+            <div class="time-block"><span class="time">09:00</span><div>Calgary 出發，開車進入洛磯山區。</div></div>
+            <div class="time-block"><span class="time">10:30–11:00</span><div>Bow Lake，停留約 30 分鐘。</div></div>
+            <div class="time-block"><span class="time">11:15–12:30</span><div>前往 Peyto Lake，於觀景點停留。</div></div>
+          </section>
+          <section class="period afternoon">
+            <h3>下午</h3>
+            <div class="time-block"><span class="time">12:30–13:30</span><div>開車前往 Banff。</div></div>
+            <div class="time-block"><span class="time">13:30–14:30</span><div>Banff 小鎮午餐。</div></div>
+            <div class="time-block"><span class="time">14:30–17:30</span><div>Banff 小鎮逛街、咖啡、補給。</div></div>
+          </section>
+          <section class="period evening">
+            <h3>晚上</h3>
+            <div class="time-block"><span class="time">18:00</span><div>前往 Canmore 住宿 Check-in。</div></div>
+            <div class="time-block"><span class="time">19:00</span><div>晚餐。</div></div>
+          </section>
+        </div>
+
+        <div class="transport-box">
+          <div class="box-title">交通方式與工具編號</div>
+          <table class="route-table">
+            <tr><th>區段</th><th>方式</th><th>工具 / 編號</th><th>備註</th></tr>
+            <tr><td>Calgary → Bow Lake → Peyto Lake → Banff</td><td>自駕</td><td>Thrifty 租車</td><td>山區自駕，沿途停靠景點</td></tr>
+            <tr><td>Banff → Canmore</td><td>自駕</td><td>Thrifty 租車</td><td>前往住宿地</td></tr>
+          </table>
+          <a class="map-link" target="_blank" href="https://www.google.com/maps/dir/Alt+Hotel+Calgary+East+Village/Bow+Lake,+Alberta/Peyto+Lake,+Alberta/Banff,+Alberta/187+Kananaskis+Way,+Canmore,+AB+T1W+0A3">開啟全日導航</a>
+        </div>
+
+        <div class="hotel-box">
+          <div class="box-title">住宿</div>
+          <strong>Mountain View (Top Floor) Condo</strong><br />
+          187 Kananaskis Way, Canmore, AB T1W 0A3, Canada
+        </div>
+      </div>
+    </details>
+
+    <details class="day" open>
+      <summary>
+        <div class="date">8/26 Wed</div>
+        <div class="day-title">Banff 深度日｜Johnston Canyon、Lake Minnewanka、Banff Gondola</div>
+        <div class="toggle">點擊展開 / 收合</div>
+      </summary>
+      <div class="content">
+        <div class="period-grid">
+          <section class="period morning">
+            <h3>上午</h3>
+            <div class="time-block"><span class="time">07:30</span><div>起床。</div></div>
+            <div class="time-block"><span class="time">08:30</span><div>從 Canmore 出發。</div></div>
+            <div class="time-block"><span class="time">09:00–10:30</span><div>Johnston Canyon，建議走到 Lower Falls 即可。</div></div>
+          </section>
+          <section class="period afternoon">
+            <h3>下午</h3>
+            <div class="time-block"><span class="time">11:00–12:00</span><div>Lake Minnewanka。</div></div>
+            <div class="time-block"><span class="time">12:30–13:30</span><div>Banff 午餐。</div></div>
+            <div class="time-block"><span class="time">15:30</span><div>前往 Banff Gondola。</div></div>
+          </section>
+          <section class="period evening">
+            <h3>晚上</h3>
+            <div class="time-block"><span class="time">15:30–17:30</span><div>Banff Gondola，建議預約 16:00 時段。</div><span class="chip gondola">🚡 Banff Gondola</span></div>
+            <div class="time-block"><span class="time">18:00–19:00</span><div>晚餐。</div></div>
+            <div class="time-block"><span class="time">19:30</span><div>回 Canmore 住宿。</div></div>
+          </section>
+        </div>
+
+        <div class="transport-box">
+          <div class="box-title">交通方式與工具編號</div>
+          <table class="route-table">
+            <tr><th>區段</th><th>方式</th><th>工具 / 編號</th><th>備註</th></tr>
+            <tr><td>Canmore → Johnston Canyon → Lake Minnewanka → Banff</td><td>自駕</td><td>Thrifty 租車</td><td>景點間移動</td></tr>
+            <tr><td>Banff Gondola</td><td>纜車</td><td>Banff Gondola</td><td>建議 16:00 時段</td></tr>
+            <tr><td>Banff → Canmore</td><td>自駕</td><td>Thrifty 租車</td><td>晚餐後返回住宿</td></tr>
+          </table>
+          <a class="map-link" target="_blank" href="https://www.google.com/maps/dir/187+Kananaskis+Way,+Canmore,+AB+T1W+0A3/Johnston+Canyon,+Alberta/Lake+Minnewanka,+Alberta/Banff+Gondola/187+Kananaskis+Way,+Canmore,+AB+T1W+0A3">開啟全日導航</a>
+        </div>
+
+        <div class="hotel-box">
+          <div class="box-title">住宿</div>
+          <strong>Mountain View (Top Floor) Condo</strong><br />
+          187 Kananaskis Way, Canmore, AB T1W 0A3, Canada
+        </div>
+      </div>
+    </details>
+
+    <details class="day" open>
+      <summary>
+        <div class="date">8/27 Thu</div>
+        <div class="day-title">Yoho → Lake Louise｜Emerald Lake、Natural Bridge、Takakkaw Falls</div>
+        <div class="toggle">點擊展開 / 收合</div>
+      </summary>
+      <div class="content">
+        <div class="period-grid">
+          <section class="period morning">
+            <h3>上午</h3>
+            <div class="time-block"><span class="time">08:00</span><div>起床。</div></div>
+            <div class="time-block"><span class="time">09:00</span><div>從 Canmore 出發。</div></div>
+            <div class="time-block"><span class="time">10:00–11:30</span><div>Emerald Lake。</div></div>
+            <div class="time-block"><span class="time">11:45–12:15</span><div>Natural Bridge。</div></div>
+          </section>
+          <section class="period afternoon">
+            <h3>下午</h3>
+            <div class="time-block"><span class="time">12:30–13:30</span><div>Field 小鎮午餐。</div></div>
+            <div class="time-block"><span class="time">13:30–14:30</span><div>開車前往 Takakkaw Falls。</div></div>
+            <div class="time-block"><span class="time">14:30–15:30</span><div>Takakkaw Falls，約 1 小時參觀。</div></div>
+            <div class="time-block"><span class="time">15:30–17:00</span><div>前往 Lake Louise 住宿 Check-in。</div></div>
+          </section>
+          <section class="period evening">
+            <h3>晚上</h3>
+            <div class="time-block"><span class="time">18:00</span><div>晚餐與休息。</div></div>
+            <div class="time-block"><span class="time">晚間</span><div>住宿附近輕鬆散步，早點休息。</div></div>
+          </section>
+        </div>
+
+        <div class="transport-box">
+          <div class="box-title">交通方式與工具編號</div>
+          <table class="route-table">
+            <tr><th>區段</th><th>方式</th><th>工具 / 編號</th><th>備註</th></tr>
+            <tr><td>Canmore → Emerald Lake → Natural Bridge → Field</td><td>自駕</td><td>Thrifty 租車</td><td>Yoho 國家公園方向</td></tr>
+            <tr><td>Field → Takakkaw Falls</td><td>自駕</td><td>Thrifty 租車</td><td>13:30–14:30 車程</td></tr>
+            <tr><td>Takakkaw Falls → Lake Louise</td><td>自駕</td><td>Thrifty 租車</td><td>前往住宿</td></tr>
+          </table>
+          <a class="map-link" target="_blank" href="https://www.google.com/maps/dir/187+Kananaskis+Way,+Canmore,+AB+T1W+0A3/Emerald+Lake,+British+Columbia/Natural+Bridge,+Yoho+National+Park/Field,+BC/Takakkaw+Falls/Mountaineer+Lodge,+Lake+Louise">開啟全日導航</a>
+        </div>
+
+        <div class="hotel-box">
+          <div class="box-title">住宿</div>
+          <strong>Mountaineer Lodge</strong><br />
+          101 Village Rd, Lake Louise, AB T0L 1E0, Canada
+        </div>
+      </div>
+    </details>
+
+    <details class="day" open>
+      <summary>
+        <div class="date">8/28 Fri</div>
+        <div class="day-title">Lake Louise → Calgary → Vancouver｜Shuttle、湖區、晚班機</div>
+        <div class="toggle">點擊展開 / 收合</div>
+      </summary>
+      <div class="content">
+        <div class="period-grid">
+          <section class="period morning">
+            <h3>上午</h3>
+            <div class="time-block"><span class="time">10:30</span><div>從住宿出發前往 Park & Ride。</div></div>
+            <div class="time-block"><span class="time">11:00</span><div>抵達 Park & Ride。</div></div>
+            <div class="time-block"><span class="time">11:15–11:45</span><div>排隊等候 Shuttle。</div></div>
+            <div class="time-block"><span class="time">12:00</span><div>搭乘 Parks Canada Shuttle 上山。</div><span class="chip shuttle">🚐 Shuttle 12:00</span></div>
+          </section>
+          <section class="period afternoon">
+            <h3>下午</h3>
+            <div class="time-block"><span class="time">12:45–13:00</span><div>抵達 Lake Louise。</div></div>
+            <div class="time-block"><span class="time">13:00–14:30</span><div>遊覽 Lake Louise；可考慮 Lakeview Lounge 茶點。</div></div>
+            <div class="time-block"><span class="time">15:00</span><div>排隊搭 Shuttle 回程。</div></div>
+            <div class="time-block"><span class="time">15:30–16:00</span><div>回到 Park & Ride 停車場。</div></div>
+          </section>
+          <section class="period evening">
+            <h3>晚上</h3>
+            <div class="time-block"><span class="time">17:00 最晚</span><div>開車離開 Lake Louise，前往 Calgary 機場。</div></div>
+            <div class="time-block"><span class="time">20:00</span><div>抵達 YYC，Thrifty 還車。</div></div>
+            <div class="time-block"><span class="time">21:55–22:35</span><div>搭乘 WestJet <strong>WS133</strong>：YYC → YVR。</div><span class="chip flight">✈️ WS133</span></div>
+          </section>
+        </div>
+
+        <div class="transport-box">
+          <div class="box-title">交通方式與工具編號</div>
+          <table class="route-table">
+            <tr><th>區段</th><th>方式</th><th>工具 / 編號</th><th>備註</th></tr>
+            <tr><td>Lake Louise 住宿 → Park & Ride</td><td>自駕</td><td>Thrifty 租車</td><td>10:30 出發，11:00 抵達</td></tr>
+            <tr><td>Park & Ride → Lake Louise</td><td>接駁車</td><td>Parks Canada Shuttle，12:00</td><td>已預訂 12:00 時段</td></tr>
+            <tr><td>Lake Louise → Park & Ride</td><td>接駁車</td><td>Parks Canada Shuttle 回程</td><td>15:00 排隊回程</td></tr>
+            <tr><td>Park & Ride → YYC 機場</td><td>自駕</td><td>Thrifty 租車</td><td>17:00 最晚出發；約 2.5–3 小時</td></tr>
+            <tr><td>YYC → YVR</td><td>飛機</td><td>WestJet WS133</td><td>21:55 起飛，22:35 抵達</td></tr>
+          </table>
+          <a class="map-link" target="_blank" href="https://www.google.com/maps/dir/Mountaineer+Lodge,+Lake+Louise/Lake+Louise+Ski+Resort/Lake+Louise,+Alberta/Calgary+International+Airport">開啟全日導航</a>
+        </div>
+
+        <div class="hotel-box">
+          <div class="box-title">住宿</div>
+          <strong>溫哥華（大姐家）</strong>
+        </div>
+
+        <div class="warning">
+          8/28 關鍵時間：15:00 開始撤退、17:00 最晚開車離開、20:00 抵達 YYC、21:55 搭機。
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <footer>
+    2026 加拿大行程互動版｜可列印、可另存 PDF、可用手機查看
+  </footer>
+
+  <script>
+    function openAll() {
+      document.querySelectorAll('details.day').forEach(item => item.open = true);
+    }
+    function closeAll() {
+      document.querySelectorAll('details.day').forEach(item => item.open = false);
+    }
+  </script>
+</body>
+</html>
