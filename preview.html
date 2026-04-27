@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>2026 加拿大旅行互動行程表 v2</title>
+<style>
+:root{
+  --bg:#f6f8f5;--card:#fff;--ink:#17231f;--muted:#65746d;--line:#dfe8e2;
+  --green:#2f6f5e;--pale:#e7f1ed;--blue:#35648f;--sand:#fff4dc;--warn:#7a5510;
+  --red:#b94335;--redbg:#fff0ed;--shadow:0 10px 26px rgba(26,48,40,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;
+  background:linear-gradient(180deg,#dceee7 0,#f6f8f5 280px);
+  color:var(--ink);
+  line-height:1.55;
+}
+header{
+  position:sticky;top:0;z-index:20;
+  padding:18px 15px 12px;
+  background:rgba(246,248,245,.9);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(223,232,226,.85);
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 14px 100px}
+h1{font-size:1.45rem;margin:0 0 4px;letter-spacing:.02em}
+.sub{color:var(--muted);font-size:.92rem}
+.hero{
+  margin:14px 0;background:var(--card);border:1px solid var(--line);
+  border-radius:24px;box-shadow:var(--shadow);padding:16px;
+}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.kpi{background:#f8fbf9;border-radius:16px;padding:12px;text-align:center}
+.kpi b{display:block;font-size:1.15rem;color:var(--green)}
+.kpi span{font-size:.82rem;color:var(--muted)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 12px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  border:0;background:var(--card);color:var(--green);padding:9px 12px;
+  border-radius:999px;font-weight:800;white-space:nowrap;
+  box-shadow:0 3px 12px rgba(35,60,50,.08);cursor:pointer;
+}
+.tab.active{background:var(--green);color:#fff}
+.notice{
+  background:var(--sand);color:var(--warn);border:1px solid #efd896;
+  border-radius:18px;padding:12px 14px;margin:0 0 14px;font-size:.91rem;
+}
+.card{
+  background:var(--card);border:1px solid rgba(223,232,226,.9);
+  border-radius:24px;box-shadow:var(--shadow);margin:12px 0;overflow:hidden;
+}
+.card-head{
+  width:100%;border:0;background:var(--pale);text-align:left;padding:15px 16px;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;color:inherit;cursor:pointer;
+}
+.card-head span{font-size:1.35rem;transition:.2s}
+.card.closed .card-head span{transform:rotate(-90deg)}
+.card.closed .card-body{display:none}
+.date{color:var(--green);font-weight:900;font-size:.92rem}
+h2{font-size:1.08rem;margin:1px 0 0}
+.card-body{padding:14px 16px 16px}
+p{margin:7px 0;color:var(--muted)}
+b{color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tag{
+  display:inline-block;background:#f1f6f3;color:var(--green);
+  border:1px solid var(--line);border-radius:999px;
+  padding:4px 9px;font-size:.78rem;font-weight:800;
+}
+.tide{
+  background:#f8fbf9;border:1px dashed var(--line);border-radius:16px;
+  padding:10px 12px;color:var(--blue);font-weight:700;margin:10px 0;
+}
+.alert{
+  background:var(--redbg);border:1px solid #f0c4bd;color:var(--red);
+  border-radius:16px;padding:10px 12px;margin:10px 0;font-weight:800;
+}
+.mini-plan{
+  margin:10px 0;background:#f8fbf9;border-radius:16px;padding:12px 13px;border:1px solid var(--line);
+}
+.mini-plan b{display:block;margin-bottom:4px}
+ul{margin:6px 0 0;padding-left:20px;color:var(--muted)}
+li{margin:3px 0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.actions a{
+  text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--green);
+  border-radius:999px;padding:7px 10px;font-weight:800;font-size:.86rem;
+}
+.section-title{margin:22px 4px 10px;font-size:1.1rem}
+.checklist{
+  background:var(--card);border:1px solid var(--line);border-radius:22px;
+  box-shadow:var(--shadow);padding:13px 16px;
+}
+.check{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #edf2ef;color:var(--muted)}
+.check:last-child{border-bottom:0}
+input[type=checkbox]{width:19px;height:19px;accent-color:var(--green);flex:none;margin-top:2px}
+.bottom{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:rgba(246,248,245,.92);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding:10px 12px calc(12px + env(safe-area-inset-bottom));
+  display:flex;gap:8px;justify-content:center;
+}
+.bottom a{
+  flex:1;max-width:250px;text-align:center;text-decoration:none;background:var(--green);
+  color:#fff;border-radius:999px;padding:11px 8px;font-weight:900;font-size:.9rem;
+}
+.hide{display:none}
+.small{font-size:.86rem;color:var(--muted)}
+@media(min-width:720px){
+  h1{font-size:1.8rem}
+  .hero-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding-bottom:0">
+    <h1>2026 加拿大旅行互動行程表 v2</h1>
+    <div class="sub">8/21–9/6｜Vancouver・Calgary・Banff・Lake Louise・Gabriola Island</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <b>行程主軸</b>
+    <p>先在 Vancouver 適應時差，再進入洛磯山脈，最後用 Gabriola Island 的 cabin 慢生活作收尾。v2 已補上 PDF 內的精準時間軸、接駁車流程、Takakkaw Falls 與關鍵提醒。</p>
+    <div class="hero-grid">
+      <div class="kpi"><b>17天</b><span>含飛行日</span></div>
+      <div class="kpi"><b>3段</b><span>城市／山區／小島</span></div>
+      <div class="kpi"><b>4天3夜</b><span>Gabriola</span></div>
+      <div class="kpi"><b>2次飛行</b><span>加拿大境內</span></div>
+    </div>
+  </section>
+
+  <div class="notice">
+    <b>Gabriola 潮汐提醒：</b>表內潮汐為規劃用版本。出發前 1–2 天，請再用 Fisheries and Oceans Canada 的 Silva Bay 或 Gabriola 附近潮汐站校正。
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" onclick="filterCards('all',this)">全部</button>
+    <button class="tab" onclick="filterCards('stay',this)">停留日</button>
+    <button class="tab" onclick="filterCards('move',this)">移動日</button>
+    <button class="tab" onclick="filterCards('mountain',this)">洛磯山區</button>
+    <button class="tab" onclick="filterCards('gabriola',this)">Gabriola</button>
+  </nav>
+
+  <section id="cards">
+
+    <article class="card" data-tag="move" id="2026-08-21">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/21（Fr）</div><h2>Taipei → Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">✈️ 長程飛行</span><span class="tag">🚗 移動日</span></div>
+        <p><b>交通：</b>CI 32 TPE 23:35 → YVR 19:45</p>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="mini-plan"><b>🕒 今日重點</b><ul><li>抵達 YVR：入境、取行李</li><li>回大姐家休息，不排正式行程</li></ul></div>
+        <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=YVR+Airport" target="_blank">YVR 地圖</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay" id="2026-08-22">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/22（Sa）</div><h2>Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🏠 家人時間</span><span class="tag">🧘 調時差</span></div>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="mini-plan"><b>建議</b><ul><li>輕鬆調時差</li><li>附近散步、採買基本用品</li><li>避免安排太硬的市區行程</li></ul></div>
+        <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=Vancouver" target="_blank">Vancouver 地圖</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay" id="2026-08-23">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/23（Su）</div><h2>Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🌆 溫哥華</span><span class="tag">🧳 整備日</span></div>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="mini-plan"><b>建議</b><ul><li>可安排市區／家人時間</li><li>準備隔天飛 Calgary 的行李</li><li>確認 WS116 航班與機場交通</li></ul></div>
+        <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=Vancouver" target="_blank">Google Maps</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="move" id="2026-08-24">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/24（Mo）</div><h2>Vancouver → Calgary</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">✈️ 境內飛行</span><span class="tag">🚗 租車</span><span class="tag">🍽️ Charbar</span></div>
+        <p><b>交通：</b>WS116 YVR 13:45 → YYC 16:15；租車：Thrifty @ YYC</p>
+        <p><b>住宿：</b>Alt Hotel Calgary East Village, 635 Confluence Way SE, Calgary</p>
+        <div class="mini-plan">
+          <b>🕒 時間軸</b>
+          <ul>
+            <li>13:45 YVR 起飛</li>
+            <li>16:15 抵達 YYC Calgary</li>
+            <li>機場取車：Thrifty @ YYC</li>
+            <li>前往 East Village / 飯店周邊</li>
+            <li>18:30 Charbar 晚餐</li>
+            <li>晚餐後：Bow River 散步 → Peace Bridge 折返 → 飯店休息</li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Alt+Hotel+Calgary+East+Village" target="_blank">飯店地圖</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Charbar+Calgary" target="_blank">Charbar</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Peace+Bridge+Calgary" target="_blank">Peace Bridge</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="move mountain" id="2026-08-25">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/25（Tu）</div><h2>Calgary → Bow Lake / Peyto Lake → Banff / Canmore</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🚗 順路北上</span><span class="tag">🏔️ 湖景日</span><span class="tag">☕ Banff 補給</span></div>
+        <p><b>住宿：</b>Mountain View (Top Floor) Condo, 187 Kananaskis Way, Canmore</p>
+        <div class="mini-plan">
+          <b>🕒 時間軸（順路北上）</b>
+          <ul>
+            <li>10:30 抵達 Bow Lake（停留 30 分鐘）</li>
+            <li>11:15 前往 Peyto Lake</li>
+            <li>11:45–12:30 Peyto Lake 觀景點</li>
+            <li>12:30–13:30 開車前往 Banff</li>
+            <li>13:30–14:30 午餐（Banff 小鎮）</li>
+            <li>14:30–17:30 Banff 小鎮 / 逛街 / Coffee / 補給</li>
+            <li>18:00 Check-in（Canmore）</li>
+            <li>19:00 晚餐</li>
+          </ul>
+        </div>
+        <p><b>動線提醒：</b>此日為「順路北上」設計，避免折返。</p>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Bow+Lake+Alberta" target="_blank">Bow Lake</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Peyto+Lake+Viewpoint" target="_blank">Peyto Lake</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Banff+Avenue" target="_blank">Banff 小鎮</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=187+Kananaskis+Way+Canmore" target="_blank">住宿地圖</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay mountain" id="2026-08-26">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/26（We）</div><h2>Johnston Canyon / Lake Minnewanka / Banff Gondola</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🌲 峽谷</span><span class="tag">🚡 纜車已預約</span><span class="tag">🏔️ Banff 核心日</span></div>
+        <p><b>住宿：</b>Mountain View (Top Floor) Condo, 187 Kananaskis Way, Canmore</p>
+        <div class="mini-plan">
+          <b>🕒 時間軸</b>
+          <ul>
+            <li>07:30 起床</li>
+            <li>08:30 出發</li>
+            <li>09:00–10:30 Johnston Canyon（走到 Lower Falls 即可，節省時間）</li>
+            <li>11:00–12:00 Lake Minnewanka</li>
+            <li>12:30–13:30 午餐（Banff）</li>
+            <li>15:30–17:30 Banff Gondola（重點）</li>
+            <li><b>15:50 Banff Gondola 已預約時段（Klook app）</b></li>
+            <li>18:00–19:00 晚餐</li>
+            <li>19:30 回 Canmore 住宿</li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Johnston+Canyon+Lower+Falls" target="_blank">Johnston Canyon</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Lake+Minnewanka" target="_blank">Lake Minnewanka</a>
+          <a href="https://www.banffjaspercollection.com/attractions/banff-gondola/" target="_blank">Banff Gondola</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay mountain" id="2026-08-27">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/27（Th）</div><h2>Emerald Lake / Natural Bridge / Field / Takakkaw Falls → Lake Louise</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🏞️ Yoho NP</span><span class="tag">💦 Takakkaw Falls</span><span class="tag">🏨 Lake Louise 住宿</span></div>
+        <p><b>住宿：</b>Mountaineer Lodge, 101 Village Rd, Lake Louise, AB T0L 1E0</p>
+        <div class="mini-plan">
+          <b>🕒 Yoho National Park 路線</b>
+          <ul>
+            <li>08:00 起床</li>
+            <li>09:00 出發</li>
+            <li>10:00–11:30 Emerald Lake</li>
+            <li>11:45–12:15 Natural Bridge</li>
+            <li>12:30–13:30 午餐（Field）</li>
+            <li>13:30–14:30 Drive up to Takakkaw Falls</li>
+            <li>14:30–15:30 Takakkaw Falls（約 1 小時參觀）</li>
+            <li>15:30 前往 Lake Louise / Check-in（約 1.5 小時）</li>
+            <li>18:00 晚餐 / 休息</li>
+          </ul>
+        </div>
+        <p><b>景點筆記：</b>Takakkaw Falls 位於 Yoho National Park，夏季水量豐沛，是此日最值得保留時間的自然景觀之一。</p>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Emerald+Lake+Yoho" target="_blank">Emerald Lake</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Natural+Bridge+Yoho" target="_blank">Natural Bridge</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Takakkaw+Falls" target="_blank">Takakkaw Falls</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Mountaineer+Lodge+Lake+Louise" target="_blank">住宿地圖</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="move mountain" id="2026-08-28">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/28（Fr）</div><h2>Lake Louise / Moraine Lake Shuttle → Calgary → Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🚐 Shuttle 關鍵日</span><span class="tag">⚠️ 時間壓力</span><span class="tag">✈️ 晚上飛 YVR</span></div>
+        <p><b>交通：</b>20:00 還車 Thrifty @ YYC；WS133 YYC 21:55 → YVR 22:35</p>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="mini-plan">
+          <b>🚐 Lake Louise Shuttle 流程</b>
+          <ul>
+            <li>10:30 出發</li>
+            <li>11:00 抵達 Park & Ride</li>
+            <li>11:15–11:45 排 Shuttle</li>
+            <li>12:00 上車 Shuttle</li>
+            <li>12:45–13:00 抵達 Lake Louise</li>
+            <li>13:00–14:30 遊覽 Lake Louise（可考慮 Lakeview Lounge 茶點）</li>
+            <li>15:00 排隊 Shuttle 回程</li>
+            <li>15:30–16:00 回到 Park & Ride 停車場</li>
+            <li>17:00 最晚開車離開 Lake Louise → Calgary 機場（約 2.5–3 小時）</li>
+            <li>20:00 還車：Thrifty @ YYC</li>
+            <li>21:55 WS133 YYC → YVR 22:35</li>
+          </ul>
+        </div>
+        <div class="alert">⚠ 17:00 最晚離開 Lake Louise，否則趕不上還車與航班。</div>
+        <div class="mini-plan">
+          <b>重要交通提示</b>
+          <ul>
+            <li>Lake Louise 夏季湖邊停車位有限，接駁車是較穩方案。</li>
+            <li>Moraine Lake 禁止私人車輛進入，務必搭乘接駁車。</li>
+            <li>建議車停 Park & Ride，再用 Shuttle 遊覽兩湖。</li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Lake+Louise+Park+and+Ride" target="_blank">Park & Ride</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Lake+Louise" target="_blank">Lake Louise</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Moraine+Lake" target="_blank">Moraine Lake</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=YYC+Airport" target="_blank">YYC 機場</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay" id="2026-08-29">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/29（Sa）</div><h2>Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🛒 補給日</span><span class="tag">🚗 Gabriola 前整備</span></div>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="mini-plan"><b>建議</b><ul><li>採買 Gabriola cabin 食材</li><li>整理小島行李，減少隔天搬運負擔</li><li>確認 BC Ferries 班次與開車時間</li></ul></div>
+        <div class="actions"><a href="https://www.bcferries.com/" target="_blank">BC Ferries</a><a href="https://www.google.com/maps/search/?api=1&query=Vancouver+supermarket" target="_blank">超市搜尋</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="gabriola move" id="2026-08-30">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/30（Su）</div><h2>Vancouver → Gabriola Island</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🚗🚢 開車＋渡輪</span><span class="tag">🌲 小島入住</span></div>
+        <p><b>交通：</b>開車＋BC Ferries（Vancouver / Nanaimo，再 Nanaimo / Gabriola）</p>
+        <p><b>住宿：</b>Gabriola Island（大姐 Cabin）</p>
+        <div class="tide">🌊 規劃用：約 14:30 低潮、約 20:30 高潮；抵達日不硬排 Malaspina。</div>
+        <div class="mini-plan"><b>建議時段</b><ul><li>抵達小島後：check-in、整理 cabin</li><li>附近海邊散步</li><li>晚餐以簡單、放鬆為主</li></ul></div>
+        <div class="actions"><a href="https://www.bcferries.com/" target="_blank">BC Ferries</a><a href="https://www.google.com/maps/search/?api=1&query=Gabriola+Island" target="_blank">Gabriola 地圖</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="gabriola stay" id="2026-08-31">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">08/31（Mo）</div><h2>Gabriola Island｜Malaspina 黃金日</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🌊 潮汐關鍵日</span><span class="tag">🪨 Malaspina</span><span class="tag">🌅 Drumbeg</span></div>
+        <p><b>住宿：</b>Gabriola Island（大姐 Cabin）</p>
+        <div class="tide">🌊 <b>今日關鍵：低潮約 15:10；Malaspina 建議 14:00–16:30。</b></div>
+        <div class="alert">⚠ Malaspina 停車後需步行約 10–15 分鐘；岩面可能濕滑，建議穿止滑鞋。</div>
+        <div class="mini-plan">
+          <b>建議時段</b>
+          <ul>
+            <li>上午：cabin 慢早餐，不趕行程</li>
+            <li>13:30 出發前往 Malaspina Galleries</li>
+            <li>14:00–16:30 Malaspina 低潮黃金窗口</li>
+            <li>17:00 後：Drumbeg Provincial Park 看岩岸與夕陽</li>
+            <li>備案：若潮汐或天氣不佳 → 改 Twin Beaches / 藝術工作室</li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Malaspina+Galleries+Gabriola+Island" target="_blank">Malaspina</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Drumbeg+Provincial+Park+Gabriola" target="_blank">Drumbeg</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="gabriola stay" id="2026-09-01">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">09/01（Tu）</div><h2>Gabriola Island｜沙灘＋文化日</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🏖️ Twin Beaches</span><span class="tag">🗿 Petroglyph</span><span class="tag">🎨 藝術工作室</span></div>
+        <p><b>住宿：</b>Gabriola Island（大姐 Cabin）</p>
+        <div class="tide">🌊 規劃用：約 16:00 低潮；Twin Beaches 下午沙灘較寬，也可補 Malaspina。</div>
+        <div class="mini-plan">
+          <b>建議時段</b>
+          <ul>
+            <li>上午：Gabriola Sands / Twin Beaches</li>
+            <li>下午：Petroglyph Provincial Park</li>
+            <li>16:00 後：可補 Malaspina 或逛藝術工作室</li>
+            <li>日落前：回 Twin Beaches 看夕陽</li>
+            <li>備案：若天候不佳 → cabin 慢生活、咖啡、室內藝術點</li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=Gabriola+Sands+Provincial+Park" target="_blank">Twin Beaches</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=Petroglyph+Provincial+Park+Gabriola" target="_blank">Petroglyph</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="gabriola move" id="2026-09-02">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">09/02（We）</div><h2>Gabriola Island → Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🚢 渡輪回程</span><span class="tag">🧘 留白日</span></div>
+        <p><b>交通：</b>開車＋BC Ferries</p>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="tide">🌊 規劃用：約 17:00 低潮；離開日通常用不到。</div>
+        <div class="mini-plan"><b>建議</b><ul><li>早上：cabin 早餐＋附近散步</li><li>中午前後：Gabriola → Nanaimo → Vancouver</li><li>晚上：回溫哥華整理與休息</li></ul></div>
+        <div class="actions"><a href="https://www.bcferries.com/" target="_blank">BC Ferries</a><a href="https://www.google.com/maps/search/?api=1&query=Gabriola+Island+to+Vancouver" target="_blank">路線地圖</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay" id="2026-09-03">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">09/03（Th）</div><h2>Vancouver</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🧳 回程前緩衝</span></div>
+        <p><b>住宿：</b>溫哥華（大姐家）</p>
+        <div class="mini-plan"><b>建議</b><ul><li>購物、散步、整理行李</li><li>確認 CI31 起飛時間與機場交通</li></ul></div>
+        <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=Vancouver" target="_blank">Vancouver 地圖</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="stay" id="2026-09-04">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">09/04（Fr）</div><h2>Vancouver → YVR Check-in</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🧳 最後整理</span><span class="tag">🌙 深夜機場</span></div>
+        <p><b>交通：</b>23:30 到 YVR 機場 check-in</p>
+        <div class="mini-plan"><b>建議</b><ul><li>白天輕鬆，不排遠行程</li><li>晚餐後整理行李</li><li>23:30 抵達 YVR 機場 check-in</li></ul></div>
+        <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=YVR+Airport" target="_blank">YVR 地圖</a></div>
+      </div>
+    </article>
+
+    <article class="card" data-tag="move" id="2026-09-05">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">09/05（Sa）</div><h2>YVR 起飛</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">✈️ 長程飛行</span></div>
+        <p><b>交通：</b>02:00 CI31 YVR 起飛</p>
+        <p><b>重點：</b>長程飛行日。</p>
+      </div>
+    </article>
+
+    <article class="card" data-tag="move" id="2026-09-06">
+      <button class="card-head" onclick="toggleCard(this)" aria-expanded="true">
+        <div><div class="date">09/06（Su）</div><h2>抵達台北</h2></div><span>⌄</span>
+      </button>
+      <div class="card-body">
+        <div class="tags"><span class="tag">🏠 回台北</span></div>
+        <p><b>交通：</b>05:00 抵達台北</p>
+      </div>
+    </article>
+  </section>
+
+  <h2 class="section-title">出發前準備清單</h2>
+  <section class="checklist">
+    <label class="check"><input type="checkbox">確認護照、eTA / 入境資料、旅遊保險</label>
+    <label class="check"><input type="checkbox">確認 CI32、WS116、WS133、CI31 航班時間</label>
+    <label class="check"><input type="checkbox">確認 Calgary Thrifty 租車與還車時間</label>
+    <label class="check"><input type="checkbox">確認 Banff Gondola 15:50 預約資料（Klook app）</label>
+    <label class="check"><input type="checkbox">確認 Lake Louise / Moraine Lake Shuttle 預約與 Park & Ride 位置</label>
+    <label class="check"><input type="checkbox">8/29 在 Vancouver 採買 Gabriola cabin 食材</label>
+    <label class="check"><input type="checkbox">8/30、9/2 查 BC Ferries 即時班次</label>
+    <label class="check"><input type="checkbox">出發前校正 Gabriola 8/31、9/1 低潮時間</label>
+    <label class="check"><input type="checkbox">下載離線 Google Maps：Vancouver / Calgary / Banff / Yoho / Lake Louise / Gabriola</label>
+    <label class="check"><input type="checkbox">準備止滑鞋、防風外套、雨具、行動電源</label>
+  </section>
+
+  <p class="small">手機使用提醒：可用瀏覽器「加入主畫面」，讓它像 App 一樣打開。</p>
+</main>
+
+<div class="bottom">
+  <a href="https://www.bcferries.com/" target="_blank">BC Ferries</a>
+  <a href="https://www.google.com/maps/search/?api=1&query=Gabriola+Island" target="_blank">Gabriola 地圖</a>
+</div>
+
+<script>
+function toggleCard(btn){btn.closest('.card').classList.toggle('closed')}
+function filterCards(tag, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.card').forEach(c=>{
+    const tags=(c.dataset.tag||'').split(/\s+/);
+    c.classList.toggle('hide', tag!=='all' && !tags.includes(tag));
+  });
+}
+document.querySelectorAll('.check input').forEach((box,i)=>{
+  const k='canada-trip-v2-check-'+i;
+  box.checked=localStorage.getItem(k)==='true';
+  box.addEventListener('change',()=>localStorage.setItem(k,box.checked));
+});
+</script>
+</body>
+</html>
